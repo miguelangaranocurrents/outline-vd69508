@@ -38,7 +38,6 @@ export type RightSidebarPanel = "comments" | "history";
 type PersistedData = Pick<
   UiStore,
   | "languagePromptDismissed"
-  | "rightSidebar"
   | "theme"
   | "sidebarWidth"
   | "sidebarRightWidth"
@@ -94,6 +93,8 @@ class UiStore {
     new URLSearchParams(window.location.search).get("sidebarHidden")
   );
 
+  // The right sidebar panel displayed in the primary split view pane. Not
+  // persisted, so the sidebar starts closed after a reload.
   @observable
   rightSidebar: RightSidebarPanel | null = null;
 
@@ -174,7 +175,6 @@ class UiStore {
       maxWidth
     );
     this.tocVisible = data.tocVisible;
-    this.rightSidebar = data.rightSidebar ?? null;
     this.theme = data.theme || Theme.System;
     Storage.set(THEME_STORAGE_KEY, this.theme);
 
@@ -571,7 +571,6 @@ class UiStore {
       sidebarWidth: this.sidebarWidth,
       sidebarRightWidth: this.sidebarRightWidth,
       languagePromptDismissed: this.languagePromptDismissed,
-      rightSidebar: this.rightSidebar,
       theme: this.theme,
     };
   }

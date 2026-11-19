@@ -94,3 +94,23 @@ it("converts an ordered list containing a checkbox item", () => {
   expect(checkboxList?.content?.[0].type).toBe("checkbox_item");
   expect(checkboxList?.content?.[1].type).toBe("checkbox_item");
 });
+
+it("does not convert a plain list that precedes a checklist", () => {
+  const markdown = `- B1 a
+- B1 b
+
+## Tasks
+
+- [ ] task one
+- [x] task two
+
+## After
+
+- A1 a`;
+
+  const ast = parser.parse(markdown);
+  const checkboxLists = findNodes(ast?.toJSON(), "checkbox_list");
+
+  expect(checkboxLists).toHaveLength(1);
+  expect(checkboxLists[0].content).toHaveLength(2);
+});
